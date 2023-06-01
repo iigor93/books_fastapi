@@ -206,6 +206,7 @@
       var col_ = $(this).attr("col");
       obj[col_] = ch;
     });
+    console.log(obj);
     $.ajax({
       url: "/user_profile/1",
       type: 'PUT',
