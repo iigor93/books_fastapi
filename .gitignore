@@ -1,1 +1,4 @@
 /sql_app.db
+/venv/
+.idea
+__pycache__
