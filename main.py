@@ -25,7 +25,7 @@ def get_user_profile(db: DB_SESSION, user_profile_id: int = 1):
 
 
 @app.put("/user_profile/{user_profile_id}/")  #, response_model=user_profile_schemas.UserProfile)
-def update_user_profile(db: DB_SESSION, request: dict = Request):  # user_profile: user_profile_schemas.UserProfile, user_profile_id: int = 1):
+def update_user_profile(db: DB_SESSION, request: str = Request):  # user_profile: user_profile_schemas.UserProfile, user_profile_id: int = 1):
     print(request)
     # user_profile_updated = user_profile_crud.update_user_profile(db, user_profile)
     return "OK"  # user_profile_updated
