@@ -1,10 +1,5 @@
-from typing import Annotated
+from fastapi import FastAPI, HTTPException
 
-from fastapi import FastAPI, Depends, HTTPException, Query
-from pydantic import BaseModel
-from sqlalchemy.orm import Session
-
-from sql_app import crud, models, schemas
 from sql_app.database import engine, DB_SESSION
 
 from user_profile import models as user_profile_models
@@ -16,7 +11,6 @@ from books import crud as books_crud
 from books import schemas as books_schemas
 
 
-models.Base.metadata.create_all(bind=engine)
 user_profile_models.Base.metadata.create_all(bind=engine)
 books_models.Base.metadata.create_all(bind=engine)
 

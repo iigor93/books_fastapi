@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список книг</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/fontawesome/css/all.min.css">
+
+</head>
+<body>
+  
+  <table class="table">
+  <thead>
+    <tr>
+      <th colspan="7">&nbsp;&nbsp;<i class="fa-regular fa-file" onclick="createNew()" title="Создать новую запись"></i>&nbsp;&nbsp;
+        <i class="fa fa-cog" onclick="showSettings()" aria-hidden="true" title="Редактировать таблицу"></i></th>
+    </tr>
+    <tr>
+      <th class="edit" scope="col">Изменить</th>
+      <th class="column_name" scope="col">Название</th>
+      <th class="column_title"  scope="col">Заголовок</th>
+      <th class="column_author"  scope="col">Автор</th>
+      <th class="column_description"  scope="col">Описание</th>
+      <th class="column_price"  scope="col">Цена</th>
+      <th class="delete" scope="col">Удалить</th>
+    </tr>
+  </thead>
+  <tbody id="table_body">
+ 
+  </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Настройки таблицы</h5>
+        
+      </div>
+      <div class="modal-body">
+
+        <table class="table">
+          <tbody>
+            <tr>
+              <td><label for="column_name_id">Название</label></td>
+              <td><input class="col_settings" type="checkbox" id="column_name_id" col="column_name" onclick="changeTable(this)"></td>
+            </tr>
+            <tr>
+              <td><label for="column_title_id">Заголовок</label></td>
+              <td><input class="col_settings" type="checkbox" id="column_title_id" col="column_title" onclick="changeTable(this)"><br></td>
+            </tr>
+            <tr>
+              <td><label for="column_author_id">Автор</label></td>
+              <td><input class="col_settings" type="checkbox" id="column_author_id" col="column_author" onclick="changeTable(this)"><br></td>
+            </tr>
+            <tr>
+              <td><label for="column_description_id">Описание</label></td>
+              <td><input class="col_settings" type="checkbox" id="column_description_id" col="column_description" onclick="changeTable(this)"><br></td>
+            </tr>
+            <tr>
+              <td><label for="column_price_id">Цена</label></td>
+              <td><input class="col_settings" type="checkbox" id="column_price_id" col="column_price" onclick="changeTable(this)"><br></td>
+            </tr>
+          </tbody>
+        </table>
+                
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="hideSettings()">Закрыть</button> -->
+        <button type="button" class="btn btn-primary" onclick="sendSettings()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel">Создание нового объекта</h5>
+        
+      </div>
+      <div class="modal-body">
+
+        <table class="table">
+          <tbody>
+            <tr>
+              <td><label for="create_name_id">Название</label></td>
+              <td><input class="col_create" type="text" id="create_name_id" col="name"></td>
+            </tr>
+            <tr>
+              <td><label for="create_title_id">Заголовок</label></td>
+              <td><input class="col_create" type="text" id="create_title_id" col="title"><br></td>
+            </tr>
+            <tr>
+              <td><label for="create_author_id">Автор</label></td>
+              <td><input class="col_create" type="text" id="create_author_id" col="author"><br></td>
+            </tr>
+            <tr>
+              <td><label for="create_description_id">Описание</label></td>
+              <td><input class="col_create" type="text" id="create_description_id" col="description"><br></td>
+            </tr>
+            <tr>
+              <td><label for="create_price_id">Цена</label></td>
+              <td><input class="col_create" type="number" min="0" max="99999" id="create_price_id" col="price"><br></td>
+            </tr>
+          </tbody>
+        </table>
+                
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="hideSettings()">Закрыть</button> -->
+        <button id="save_item" type="button" class="btn btn-primary" onclick="sendNew()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="/static/jquery/jquery-3.6.4.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script>
+  $( document ).ready(function() {
+      
+    getProfile();
+    getBooks(); 
+  });
+
+  function getBooks() {
+    //получаем список книг и отрисовываем таблицу
+    $.get( '/books/', function( data ) {
+      $( data ).each(function() {
+        // console.log(this.author);
+        drawRow(this);
+      });
+    });
+  }
+
+  function deleteItem(number) {
+    // удаляем один элемент
+    console.log(number);
+    $.ajax({
+      url: "/books/" + number + "/",
+      type: 'DELETE',
+      success: function(data, textStatus, xhr) {
+        // console.log(xhr.status);
+        $( "#row_" + number ).hide();
+      }
+    });
+  }
+
+  function getProfile() {
+    //получаем настройки колонок
+    $.get( '/user_profile/1', function( data ) {
+      hideColumns(data);
+    });
+  }
+
+  function hideColumns(data) {
+    //прячем или отображаем колонки
+    $.each(data, function(index, value){ 
+      // console.log(index + " : " + value);
+      if (index != "id") {
+        if (value === true) {
+          $( "." + index ).show();
+          $( "#" + index + "_id").attr("checked", "checked");
+        }
+        else {
+          $( "." + index ).hide();
+          $( "#" + index + "_id").removeAttr("checked");
+        }
+      }
+    });
+  };
+
+  function showSettings() {
+    $('#exampleModal').modal('show')
+  }
+
+  function hideSettings() {
+    $('#exampleModal').modal('hide')
+  }
+
+  function changeTable(column) {
+    //показывает или убирает колонки при нажатии на checkbox
+    var ch = $( column ).prop("checked");
+    var col_ = $(column).attr("col");
+
+    if (ch === true) {
+      $( "." + col_ ).show();
+    }
+    else {
+      $( "." + col_ ).hide();
+    }
+  }
+
+  function sendSettings() {
+    // отправка данных с настройками таблицы
+    var obj = {};
+    $( ".col_settings" ).each(function() {
+      var ch = $( this ).prop("checked");
+      var col_ = $(this).attr("col");
+      obj[col_] = ch;
+    });
+    $.ajax({
+      url: "/user_profile/1",
+      type: 'PUT',
+      data: obj,
+      success: function(result) {
+        console.log(result)
+      }
+    });
+
+    hideSettings();
+  }
+
+  function createNew() {
+    $( ".col_create" ).val("");
+    $( "#save_item" ).attr("onclick", "sendNew()");
+    $('#createModal').modal('show');
+  }
+
+  function sendNew() {
+    //отправка данных с новой книгой
+    var obj = {};
+    $( ".col_create" ).each(function() {
+      var ch = $( this ).val();
+      var col_ = $(this).attr("col");
+      obj[col_] = ch;
+    });
+    console.log(obj);
+
+    $.ajax({
+      url: "/books/",
+      type: 'POST',
+      data: obj,
+      success: function(result) {
+        console.log("SUCCESS");
+        drawRow(result);
+        getProfile();
+      },
+      error: function($xhr){
+        checkErr($xhr);
+      }
+    });
+
+    $('#createModal').modal('hide')
+  }
+
+  function drawRow(item) {
+    //отрисовка одной строки таблицы  
+    $( "#table_body" ).append(
+          '<tr id="row_' + item.id + '">' + 
+            '<td class="edit"><i class="fa-solid fa-pen-to-square" onclick="editItem(+' + item.id + ')"></i>' + 
+            '</td><td class="column_name" >' + item.name + '</td>' + 
+            '<td class="column_title" >' + item.title + '</td>' +
+            '<td class="column_author" >' + item.author + '</td>' +
+            '<td class="column_description" >' + item.description + '</td>' +
+            '<td class="column_price" >' + item.price + '</td>' + 
+            '<td class="delete"><i class="fa-solid fa-trash" onclick="deleteItem(+' + item.id + ')"></i></td>' +
+          '</tr>'
+        )
+  }
+
+  function editItem(id) {
+    //изменение одной книги
+    $( "#createModalLabel" ).html("Редактирование");
+    var trow = $( "#row_" + id );
+    $( trow ).children().each(function() {
+      var class_name = $(this).attr("class");
+      if (class_name.startsWith("column_")) {
+        var col_name = class_name.split("_")[1];
+        var input_field = $( "#create_" + col_name + "_id" )[0];
+        $( input_field ).val($(this).html())
+      }
+    });
+
+    $( "#save_item" ).attr("onclick", "sendUpdateItem(" + id + ")")
+    
+    $('#createModal').modal('show');
+  }
+
+  function sendUpdateItem(id) {
+    //отправка данных с новой книгой
+    var obj = {};
+    $( ".col_create" ).each(function() {
+      var ch = $( this ).val();
+      var col_ = $(this).attr("col");
+      obj[col_] = ch;
+    });
+    
+    $.ajax({
+      url: "/books/" + id + "/",
+      type: 'PUT',
+      data: obj,
+      success: function(result) {
+        // console.log(obj);
+        var trow = $( "#row_" + result.id );
+        $( trow ).children().each(function() {
+          var class_name = $(this).attr("class");
+          if (class_name.startsWith("column_")) {
+            var col_name = class_name.split("_")[1];
+            $(this).html(result[col_name]);
+          }
+        });
+      },
+      error: function($xhr){
+        checkErr($xhr);
+      }
+    });
+
+    $('#createModal').modal('hide')
+  };
+
+  function checkErr($xhr) {
+    var obj = jQuery.parseJSON($xhr.responseText)
+        console.log(obj);
+        if (obj.name){
+           if (obj.name[0] === "This field may not be blank.") {
+            var err_text = "Укажите название книги"
+            alert(err_text);
+          }
+          if (obj.name[0] === "Ensure this field has no more than 20 characters.") {
+            var err_text = "Название не может быть более 20 символов."
+            alert(err_text);
+          }
+        }
+
+        if (obj.title) {
+          var err_text = "Заголовок не может быть более 30 символов."
+          alert(err_text);
+        }
+
+        if (obj.author){
+           if (obj.author[0] === "This field may not be blank.") {
+            var err_text = "Укажите название автора"
+            alert(err_text);
+          }
+          if (obj.author[0] === "Ensure this field has no more than 30 characters.") {
+            var err_text = "Автор не может быть более 30 символов."
+            alert(err_text);
+          }
+        }
+
+        if (obj.description) {
+          var err_text = "Описание не может быть более 512 символов."
+          alert(err_text);
+        }
+        
+        if (obj.price){
+           if (obj.price[0] === "A valid integer is required.") {
+            var err_text = "Укажите цену"
+            alert(err_text);
+          }
+          if (obj.price[0] === "Ensure this value is less than or equal to 99999.") {
+            var err_text = "Цена не может быть больше 99999."
+            alert(err_text);
+          }
+        }
+        console.log("END ERR")
+  }
+
+</script>
+
+</body>
+</html>
