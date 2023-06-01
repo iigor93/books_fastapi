@@ -214,6 +214,9 @@
       dataType: "json",
       success: function(result) {
         console.log(result)
+      },
+      error: function($xhr){
+        checkErr($xhr);
       }
     });
 
