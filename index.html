@@ -243,7 +243,7 @@
     $.ajax({
       url: "/books/",
       type: 'POST',
-      data: obj,
+      data: JSON.stringify(obj),
       success: function(result) {
         console.log("SUCCESS");
         drawRow(result);
@@ -302,7 +302,7 @@
     $.ajax({
       url: "/books/" + id + "/",
       type: 'PUT',
-      data: obj,
+      data: JSON.stringify(obj),
       success: function(result) {
         // console.log(obj);
         var trow = $( "#row_" + result.id );
