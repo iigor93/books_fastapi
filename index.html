@@ -204,7 +204,7 @@
     $( ".col_settings" ).each(function() {
       var ch = $( this ).prop("checked");
       var col_ = $(this).attr("col");
-      obj['"' + col_ + '"'] = ch;
+      obj["'" + col_ + "'"] = ch;
     });
     console.log(obj);
     $.ajax({
