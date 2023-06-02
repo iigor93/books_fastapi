@@ -328,7 +328,10 @@
 
   function checkErr($xhr) {
     var obj = jQuery.parseJSON($xhr.responseText)
+        console.log("***", obj);
         console.log(obj);
+        console.log("***", obj);
+            
         if (obj.name){
            if (obj.name[0] === "This field may not be blank.") {
             var err_text = "Укажите название книги"
