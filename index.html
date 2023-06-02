@@ -335,59 +335,36 @@
         if (obj.detail){
           detail_list = obj.detail;
           $( detail_list ).each(function(){
-            console.log("DETAIL LIST");
-            console.log(this.msg);
-            console.log("DETAIL END");
             if (this.loc[1] === "name"){
-              var err_text = "Укажите название книги"
+              var err_text = "Укажите название книги (не более 20 символов)."
               alert(err_text);
-            }
+            };
+
+            if (this.loc[1] === "title"){
+              var err_text = "Заголовок не может быть более 30 символов."
+              alert(err_text);
+            };
+
+            if (this.loc[1] === "author"){
+              var err_text = "Укажите название автора (не более 30 символов)."
+              alert(err_text);
+            };
+
+            if (this.loc[1] === "description"){
+              var err_text = "Описание не может быть более 512 символов."
+              alert(err_text);
+            };
+
+
+            if (this.loc[1] === "price"){
+              var err_text = "Укажите цену (не более 99999)."
+              alert(err_text);
+            };
+
+
           })
         }
 
-
-        if (obj.name){
-           if (obj.name[0] === "This field may not be blank.") {
-            var err_text = "Укажите название книги"
-            alert(err_text);
-          }
-          if (obj.name[0] === "Ensure this field has no more than 20 characters.") {
-            var err_text = "Название не может быть более 20 символов."
-            alert(err_text);
-          }
-        }
-
-        if (obj.title) {
-          var err_text = "Заголовок не может быть более 30 символов."
-          alert(err_text);
-        }
-
-        if (obj.author){
-           if (obj.author[0] === "This field may not be blank.") {
-            var err_text = "Укажите название автора"
-            alert(err_text);
-          }
-          if (obj.author[0] === "Ensure this field has no more than 30 characters.") {
-            var err_text = "Автор не может быть более 30 символов."
-            alert(err_text);
-          }
-        }
-
-        if (obj.description) {
-          var err_text = "Описание не может быть более 512 символов."
-          alert(err_text);
-        }
-        
-        if (obj.price){
-           if (obj.price[0] === "A valid integer is required.") {
-            var err_text = "Укажите цену"
-            alert(err_text);
-          }
-          if (obj.price[0] === "Ensure this value is less than or equal to 99999.") {
-            var err_text = "Цена не может быть больше 99999."
-            alert(err_text);
-          }
-        }
         console.log("END ERR")
   }
 
