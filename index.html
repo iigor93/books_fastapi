@@ -209,10 +209,10 @@
     console.log(obj);
     $.ajax({
       url: "/user_profile/1/",
-      type: 'PUT',
-      dataType: 'json',
+      type: "PUT",
+      dataType: "json",
       data: JSON.stringify(obj),
-      
+      contentType: "application/json",
       success: function(result) {
         console.log(result)
       },
