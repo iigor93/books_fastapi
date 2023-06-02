@@ -9,7 +9,7 @@ class Book(BaseModel):
     id: int | None = None
     name: str = Field(min_length=1, max_length=20)
     title: Optional[str] = Field(None, max_length=30)
-    author: str
+    author: str = Field(min_length=1, max_length=30)
     description: Optional[str] = Field(None, max_length=512)
     price: int = Field(gt=0, le=99999)
 
