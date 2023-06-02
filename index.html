@@ -331,7 +331,18 @@
         console.log("***", obj);
         console.log(obj);
         console.log("***", obj);
-            
+        
+        if (obj.detail){
+          detail_list = obj.detail;
+          $( detail_list ).each(function(){
+            if (this.loc[0] === "name" & this.msg === "field required"){
+              var err_text = "Укажите название книги"
+              alert(err_text);
+            }
+          })
+        }
+
+
         if (obj.name){
            if (obj.name[0] === "This field may not be blank.") {
             var err_text = "Укажите название книги"
