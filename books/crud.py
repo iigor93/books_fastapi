@@ -9,7 +9,6 @@ def get_books_list(db: Session):
     """ Get books list """
 
     books_list = db.query(models.BookDB).all()
-    print(books_list)
     return books_list
 
 
