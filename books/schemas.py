@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Book(BaseModel):
@@ -9,7 +9,7 @@ class Book(BaseModel):
     title: str | None = None
     author: str
     description: str | None = None
-    price: int
+    price: int = Field(gt=0, le=99999)
 
     class Config:
         orm_mode = True
