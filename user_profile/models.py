@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Boolean
+from sqlalchemy.orm import Mapped, mapped_column
 
 from sql_app.database import Base
 
@@ -6,9 +6,9 @@ from sql_app.database import Base
 class UserProfileDB(Base):
     __tablename__ = "user_profile"
 
-    id = Column(Integer, primary_key=True, index=True)
-    column_name = Column(Boolean, default=True)
-    column_title = Column(Boolean, default=True)
-    column_author = Column(Boolean, default=True)
-    column_description = Column(Boolean, default=True)
-    column_price = Column(Boolean, default=True)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    column_name: Mapped[bool] = mapped_column(default=True)
+    column_title: Mapped[bool] = mapped_column(default=True)
+    column_author: Mapped[bool] = mapped_column(default=True)
+    column_description: Mapped[bool] = mapped_column(default=True)
+    column_price: Mapped[bool] = mapped_column(default=True)
